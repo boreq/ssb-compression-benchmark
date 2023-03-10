@@ -28,17 +28,18 @@ type TestCompressionSystem struct {
 }
 
 const (
-	BENCH_SNAPPY  = "BENCH_SNAPPY"
-	BENCH_S2      = "BENCH_S2"
-	BENCH_DEFLATE = "BENCH_DEFLATE"
-	BENCH_LZMA    = "BENCH_LZMA"
-	BENCH_ZSTD    = "BENCH_ZSTD"
-	BENCH_BROTLI  = "BENCH_BROTLI"
+	BENCH_SNAPPY    = "BENCH_SNAPPY"
+	BENCH_S2        = "BENCH_S2"
+	BENCH_S2_SNAPPY = "BENCH_S2_SNAPPY"
+	BENCH_DEFLATE   = "BENCH_DEFLATE"
+	BENCH_LZMA      = "BENCH_LZMA"
+	BENCH_ZSTD      = "BENCH_ZSTD"
+	BENCH_BROTLI    = "BENCH_BROTLI"
 )
 
 func BenchmarkLines(b *testing.B) {
 	batches := []int{1, 10, 100}
-	sampleSize := 0.01
+	sampleSize := 0.05
 
 	messageSources := []struct {
 		Name       string
@@ -63,6 +64,7 @@ func BenchmarkLines(b *testing.B) {
 	for _, trigger := range []string{
 		BENCH_SNAPPY,
 		BENCH_S2,
+		BENCH_S2_SNAPPY,
 		BENCH_DEFLATE,
 		BENCH_LZMA,
 		BENCH_ZSTD,
@@ -104,6 +106,11 @@ func BenchmarkLines(b *testing.B) {
 					return ssb_compression.NewSystemKlauspostS2(s2.WriterBestCompression())
 				},
 			},
+		}...)
+	}
+
+	if os.Getenv(BENCH_S2_SNAPPY) != "" {
+		compressionSystems = append(compressionSystems, []TestCompressionSystem{
 			{
 				Name: "s2_snappy_compat_default",
 				Create: func() (ssb_compression.CompressionSystem, error) {
