@@ -75,7 +75,7 @@ func run() error {
 			return result.Systems[i].Ratio > result.Systems[j].Ratio
 		})
 		for _, system := range result.Systems {
-			readmeBuffer.WriteString(fmt.Sprintf("%20s = %.2f ratio\n", system.SystemName, system.Ratio))
+			readmeBuffer.WriteString(fmt.Sprintf("%21s = %.2f ratio\n", system.SystemName, system.Ratio))
 		}
 		readmeBuffer.WriteString("```\n")
 
