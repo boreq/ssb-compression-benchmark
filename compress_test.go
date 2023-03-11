@@ -7,8 +7,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/andybalholm/brotli"
+	ssb_compression "github.com/boreq/ssb-compression-benchmark"
 	"github.com/klauspost/compress/s2"
 	"github.com/klauspost/compress/zstd"
+	"github.com/stretchr/testify/require"
 	"log"
 	"math/rand"
 	"os"
@@ -17,9 +19,6 @@ import (
 	"runtime"
 	"strings"
 	"testing"
-
-	ssb_compression "github.com/boreq/ssb-compression-benchmark"
-	"github.com/stretchr/testify/require"
 )
 
 type TestCompressionSystem struct {
@@ -37,9 +36,81 @@ const (
 	BENCH_BROTLI    = "BENCH_BROTLI"
 )
 
+type MessageKinds struct {
+	FeedMessages                int
+	CreateHistoryStreamRequests int
+	OtherRequests               int
+	EbtNotes                    int
+	Other                       int
+}
+
+const (
+	sampleSize              = 0.025
+	steadySamplesMultiplier = 20
+)
+
+func TestMessageSources(t *testing.T) {
+	messageSources := []struct {
+		Name       string
+		Path       string
+		SampleSize float64
+	}{
+		{
+			Name:       "many_feed_messages",
+			Path:       "initial.txt",
+			SampleSize: sampleSize,
+		},
+		{
+			Name:       "few_feed_messages",
+			Path:       "steady.txt",
+			SampleSize: steadySamplesMultiplier * sampleSize,
+		},
+	}
+
+	for _, messageSource := range messageSources {
+		t.Run(messageSource.Name, func(t *testing.T) {
+			messages, err := Load(testdataFilepath(messageSource.Path))
+			require.NoError(t, err)
+
+			kinds := MessageKinds{}
+
+			for _, msg := range messages {
+				p := msg.Payload
+
+				if bytes.Contains(p, []byte(`"signature"`)) {
+					kinds.FeedMessages++
+					continue
+				}
+
+				if bytes.Contains(p, []byte(`"name":["createHistoryStream"]`)) {
+					kinds.CreateHistoryStreamRequests++
+					continue
+				}
+
+				if bytes.Contains(p, []byte(`{"name":[`)) {
+					kinds.OtherRequests++
+					continue
+				}
+
+				if bytes.Contains(p, []byte(`.ed25519":`)) {
+					kinds.EbtNotes++
+					continue
+				}
+
+				kinds.Other++
+			}
+
+			t.Log(fmt.Sprintf("%+v", kinds))
+
+			messages = messages[:int(float64(len(messages))*messageSource.SampleSize)]
+
+			t.Log("source:", messageSource.Name, "number of messages:", len(messages))
+		})
+	}
+}
+
 func BenchmarkLines(b *testing.B) {
 	batches := []int{1, 10, 100}
-	sampleSize := 0.05
 
 	messageSources := []struct {
 		Name       string
@@ -54,7 +125,7 @@ func BenchmarkLines(b *testing.B) {
 		{
 			Name:       "few_feed_messages",
 			Path:       "steady.txt",
-			SampleSize: 5 * sampleSize,
+			SampleSize: steadySamplesMultiplier * sampleSize,
 		},
 	}
 
@@ -284,6 +355,8 @@ func Load(filepath string) ([]Message, error) {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
+	scanner.Buffer(nil, 50*bufio.MaxScanTokenSize)
+
 	for scanner.Scan() {
 		line := scanner.Text()
 
