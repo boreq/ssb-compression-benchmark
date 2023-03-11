@@ -49,7 +49,7 @@ func run() error {
 	readmeBuffer.WriteString("## Performance\n")
 
 	for _, result := range results.CompressionResults {
-		resultsChart, err := report.MakePerformanceResultChart(result)
+		resultsChart, err := report.MakeResultChart(result)
 		if err != nil {
 			return errors.Wrap(err, "error creating chart")
 		}

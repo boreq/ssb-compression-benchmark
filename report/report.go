@@ -134,11 +134,12 @@ func getBenchResults(r io.Reader) ([]CompressionBenchResult, error) {
 }
 
 const (
+	chartHeight   = 800
 	chartWidth    = 2000
 	chartBarWidth = 100
 )
 
-func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, error) {
+func MakeResultChart(result CompressionBenchResult) (chart.BarChart, error) {
 	graph := chart.BarChart{
 		Title: result.BenchmarkName,
 		Background: chart.Style{
@@ -146,7 +147,7 @@ func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, 
 				Top: 40,
 			},
 		},
-		Height:       512,
+		Height:       chartHeight,
 		BarWidth:     chartBarWidth,
 		Width:        chartWidth,
 		UseBaseValue: true,
@@ -155,8 +156,8 @@ func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, 
 			Name:      "ratio",
 			NameStyle: chart.StyleTextDefaults(),
 			Range: &chart.ContinuousRange{
-				Min: 0.8,
-				Max: 3,
+				Min: 0.9,
+				Max: 2.5,
 			},
 			Ticks: []chart.Tick{
 				{
@@ -164,12 +165,16 @@ func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, 
 					Label: "1",
 				},
 				{
+					Value: 1.5,
+					Label: "1.5",
+				},
+				{
 					Value: 2,
 					Label: "2",
 				},
 				{
-					Value: 3,
-					Label: "3",
+					Value: 2.5,
+					Label: "2.5",
 				},
 			},
 		},
@@ -179,8 +184,7 @@ func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, 
 				defaults.GetTextOptions().WriteToRenderer(r)
 				r.SetTextRotation(3.14 / 2)
 				text := "Compression ratio"
-				r.Text(text, canvasBox.Width()+50, canvasBox.Height()/2) //-textBox.Height()/2)
-
+				r.Text(text, canvasBox.Width()+60, canvasBox.Height()/2)
 			},
 		},
 	}
@@ -232,10 +236,6 @@ func MakePerformanceResultChart(result CompressionBenchResult) (chart.BarChart, 
 		}
 
 		graph.Bars = append(graph.Bars, value)
-
-		if v := system.Ratio * 1.1; v > graph.YAxis.Range.GetMax() {
-			graph.YAxis.Range.SetMax(v)
-		}
 	}
 
 	return graph, nil
