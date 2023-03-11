@@ -8,8 +8,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Few feed messages (compressing messages in batches of 10)
 ![](./Few&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;in&#32;batches&#32;of&#32;10\).png)
 ```
-     Brotli (default) = 2.01 ratio
-        Brotli (best) = 1.95 ratio
+        Brotli (best) = 2.01 ratio
+     Brotli (default) = 1.95 ratio
        Deflate (best) = 1.90 ratio
     Deflate (default) = 1.88 ratio
                 LZMA2 = 1.85 ratio
@@ -27,8 +27,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Few feed messages (compressing messages in batches of 100)
 ![](./Few&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;in&#32;batches&#32;of&#32;100\).png)
 ```
-     Brotli (default) = 2.51 ratio
-        Brotli (best) = 2.43 ratio
+        Brotli (best) = 2.51 ratio
+     Brotli (default) = 2.43 ratio
        Deflate (best) = 2.38 ratio
           ZSTD (best) = 2.37 ratio
        ZSTD (default) = 2.33 ratio
@@ -46,8 +46,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Few feed messages (compressing messages individually)
 ![](./Few&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;individually\).png)
 ```
-        Brotli (best) = 1.28 ratio
-     Brotli (default) = 1.25 ratio
+     Brotli (default) = 1.28 ratio
+        Brotli (best) = 1.25 ratio
        Deflate (best) = 1.21 ratio
                 LZMA2 = 1.11 ratio
           ZSTD (best) = 1.10 ratio
@@ -65,8 +65,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Many feed messages (compressing messages in batches of 10)
 ![](./Many&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;in&#32;batches&#32;of&#32;10\).png)
 ```
-     Brotli (default) = 1.91 ratio
-        Brotli (best) = 1.84 ratio
+        Brotli (best) = 1.91 ratio
+     Brotli (default) = 1.84 ratio
        Deflate (best) = 1.79 ratio
     Deflate (default) = 1.77 ratio
           ZSTD (best) = 1.77 ratio
@@ -84,8 +84,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Many feed messages (compressing messages in batches of 100)
 ![](./Many&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;in&#32;batches&#32;of&#32;100\).png)
 ```
-     Brotli (default) = 2.48 ratio
-        Brotli (best) = 2.41 ratio
+        Brotli (best) = 2.48 ratio
+     Brotli (default) = 2.41 ratio
           ZSTD (best) = 2.38 ratio
        Deflate (best) = 2.37 ratio
        ZSTD (default) = 2.34 ratio
@@ -103,8 +103,8 @@ cpu=AMD Ryzen 7 3700X 8-Core Processor
 ### Many feed messages (compressing messages individually)
 ![](./Many&#32;feed&#32;messages&#32;\(compressing&#32;messages&#32;individually\).png)
 ```
-     Brotli (default) = 1.38 ratio
-        Brotli (best) = 1.36 ratio
+        Brotli (best) = 1.38 ratio
+     Brotli (default) = 1.36 ratio
        Deflate (best) = 1.28 ratio
     Deflate (default) = 1.23 ratio
                 LZMA2 = 1.20 ratio

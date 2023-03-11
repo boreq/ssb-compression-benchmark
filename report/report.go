@@ -242,12 +242,12 @@ func MakeResultChart(result CompressionBenchResult) (chart.BarChart, error) {
 }
 
 var systemNames = map[string]string{
-	"brotli_06-":                "Brotli (best)",
-	"brotli_11-":                "Brotli (default)",
 	"brotli_00-":                "Brotli (fastest)",
-	"deflate_best-":             "Deflate (best)",
+	"brotli_06-":                "Brotli (default)",
+	"brotli_11-":                "Brotli (best)",
 	"deflate_fastest-":          "Deflate (fastest)",
 	"deflate_default-":          "Deflate (default)",
+	"deflate_best-":             "Deflate (best)",
 	"lzma-":                     "LZMA",
 	"lzma2-":                    "LZMA2",
 	"s2_best-":                  "S2 (best)",
